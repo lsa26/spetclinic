@@ -1,7 +1,8 @@
-public class Broken {
+package com.example;
 
-    public void method() {
-        System.out.println("Hello World");
+public class UserService {
+
+    public List<String> activeUsers() {
+        // implement the method here
     }
-
 }
