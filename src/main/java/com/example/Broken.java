@@ -1,9 +1,25 @@
 package com.example;
 
-public class Broken {
+import java.util.List;
+import java.util.ArrayList;
 
-    public void method() {
-        System.out.println("Hello World");
+public class UserService {
+
+    public List<String> getActiveUsers(List<String> allUsers) {
+        List<String> activeUsers = new ArrayList<>();
+        
+        for (String user : allUsers) {
+            if (user != null && user.length() > 0) {
+                // Bug subtil : ajoute TOUS les utilisateurs non-vides
+                activeUsers.add(user);
+            }
+        }
+        
+        // 💥 ERREUR DE COMPILATION AJOUTÉE
+        return activeUsers.undefined();  // Méthode inexistante
     }
-
+    
+    private boolean isUserActive(String username) {
+        return !username.startsWith("INACTIVE_");
+    }
 }
