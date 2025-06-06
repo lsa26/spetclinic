@@ -16,7 +16,7 @@ public class UserService {
         }
         
         // 💥 ERREUR DE COMPILATION AJOUTÉE
-        return activeUsers.undefined();  // Méthode inexistante
+        return activeUsers;  // Méthode inexistante
     }
     
     private boolean isUserActive(String username) {
