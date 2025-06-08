@@ -2,6 +2,6 @@ package com.example;
 
 public class Broken {
     public void method() {
-        System.out.println("Hello Adam");
+        System.out.println("Fixed compilation error");
     }
 }
