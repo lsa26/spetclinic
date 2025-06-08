@@ -5,21 +5,18 @@ import java.util.ArrayList;
 
 public class UserService {
 
-    public List<String> getActiveUsers(List<String> allUsers) {
-        List<String> activeUsers = new ArrayList<>();
-        
-        for (String user : allUsers) {
-            if (user != null && user.length() > 0) {
-                // Bug subtil : ajoute TOUS les utilisateurs non-vides
-                activeUsers.add(user);
-            }
-        }
-        
-        // 💥 ERREUR DE COMPILATION AJOUTÉE
-        return activeUsers.undefined();  // Méthode inexistante
+    private List<String> users = new ArrayList<>();
+
+    public void addUser(String user) {
+        users.add(user);
     }
-    
-    private boolean isUserActive(String username) {
-        return !username.startsWith("INACTIVE_");
+
+    public void clearUsers() {
+        users.clear(); // Fixed: replaced undefined() with clear()
     }
+
+    public List<String> getUsers() {
+        return users;
+    }
+
 }
