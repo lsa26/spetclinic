@@ -1,13 +1,4 @@
 package com.example;
-
 public class feature {
-
-    public static void main(String[] args) {
-        System.out.println("This will not compile")
-
-        int result = addNumbers(5, 10);
-        System.out.println("Result: " + result);
-    }
-
-    public static int addNumbers(int a, int b) {
-        return a + b;
+    // ... rest of the code ... 
+}
