@@ -36,6 +36,8 @@ import org.springframework.data.jpa.repository.Query;
  * @author Michael Isvy
  * @author Wick Dynex
  */
+
+
 public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 
 	/**
@@ -44,6 +46,9 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 	 */
 	@Query("SELECT ptype FROM PetType ptype ORDER BY ptype.name")
 	List<PetType> findPetTypes();
+
+	List<Owner> findByAdress(String adress);
+
 
 	/**
 	 * Retrieve {@link Owner}s from the data store by last name, returning all owners
