@@ -1,6 +1,6 @@
 package com.example;
 
-public class Feature {
+class Feature {
 
     public static void main(String[] args) {
         System.out.println("This will compile!");
