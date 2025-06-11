@@ -3,7 +3,7 @@ package com.example;
 import java.util.List;
 import java.util.ArrayList;
 
-class UserService {
+public class UserService {
 
     private List<String> users = new ArrayList<>();
 
@@ -17,5 +17,3 @@ class UserService {
 
     public List<String> getUsers() {
         return users;
-    }
-}
