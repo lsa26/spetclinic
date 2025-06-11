@@ -3,7 +3,7 @@ package com.example;
 import java.util.List;
 import java.util.ArrayList;
 
- class UserService {
+class UserService {
 
     private List<String> users = new ArrayList<>();
 
@@ -12,8 +12,10 @@ import java.util.ArrayList;
     }
 
     public void clearUsers() {
-        users.clear(); // Fixed: replaced undefined() with clear()
+        users.clear();
     }
 
     public List<String> getUsers() {
         return users;
+    }
+}
