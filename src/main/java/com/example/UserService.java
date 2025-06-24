@@ -16,4 +16,6 @@ public class UserService {
     }
 
     public List<String> getUsers() {
-        return users;
+        return new ArrayList<>(users);
+    }
+}
