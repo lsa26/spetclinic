@@ -1,20 +1,14 @@
-package com.example;
+const API_ENDPOINT = 'https://api.example.com/data';
 
-import java.util.List;
-import java.util.ArrayList;
-
-public class UserService {
-
-    private List<String> users = new ArrayList<>();
-
-    public void addUser(String user) {
-        users.add(user);
+async function fetchData(token) {
+  if (!token) {
+    throw new Error('Missing required parameter: token');
+  }
+  const response = await fetch(API_ENDPOINT, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`
     }
-
-    public void clearUsers() {
-        users.clear();
-    }
-
-    public List<String> getUsers() {
-        return new ArrayList<>(users);
-    
+  });
+  // ... rest of the code
+}
