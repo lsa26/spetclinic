@@ -12,7 +12,7 @@ public class UserService {
     }
 
     public void clearUsers() {
-        users.clear();
+        users.clr();
     }
 
     public List<String> getUsers() {
