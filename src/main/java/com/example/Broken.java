@@ -2,6 +2,6 @@ package com.example;
 
 public class Broken {
     public void method() {
-        System.out.println("Hello Raphael"); // Added semicolon
-    }
-} // Added missing '}'
+        System.out.println("Hello Raphael")
+    
+} 
