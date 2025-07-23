@@ -87,7 +87,7 @@ jobs:
             -H "Accept: application/json" \
             --max-time 30 \
             --data "$payload" \
-            "${{ secrets.n8n_url }}" || {
+            "${{ secrets.N8N_URL }}" || {
               echo "Webhook call failed, but continuing..."
               exit 0
             }
