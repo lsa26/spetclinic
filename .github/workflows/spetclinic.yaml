@@ -64,6 +64,7 @@ jobs:
         run: |
           payload=$(cat <<EOF
           {
+            "platform": "github",
             "job": "${{ github.workflow }}",
             "build": "${{ github.run_number }}",
             "result": "FAILURE",
