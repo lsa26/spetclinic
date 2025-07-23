@@ -1,0 +1,92 @@
+name: "spetclinic"
+
+on:
+  workflow_dispatch:  # Permet le déclenchement manuel
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: false
+        default: 'dev'
+        type: choice
+        options:
+        - dev
+        - staging
+        - prod
+      skip_tests:
+        description: 'Skip tests'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    
+    steps:
+      - name: Cleanup workspace
+        run: |
+          rm -rf ${{ github.workspace }}/*
+          rm -rf ${{ github.workspace }}/.??*
+        
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          repository: lsa26/spetclinic
+          ref: main
+          
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'  # Adjust version as needed
+          distribution: 'temurin'
+          
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+          
+      - name: Build project
+        run: |
+          mvn -v
+          mvn spring-javaformat:apply
+          if [ "${{ github.event.inputs.skip_tests }}" = "true" ]; then
+            echo "Skipping tests as requested"
+            mvn -Dmaven.repo.local=~/.m2 -DskipTests=true -Dcheckstyle.skip=true package
+          else
+            mvn -Dmaven.repo.local=~/.m2 -DskipTests=true -Dcheckstyle.skip=true package
+          fi
+          
+      - name: Send failure notification
+        if: failure()
+        run: |
+          payload=$(cat <<EOF
+          {
+            "job": "${{ github.workflow }}",
+            "build": "${{ github.run_number }}",
+            "result": "FAILURE",
+            "buildUrl": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+            "consoleUrl": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+            "timestamp": "$(date '+%Y-%m-%d %H:%M:%S')",
+            "repository": "${{ github.repository }}",
+            "branch": "${{ github.ref_name }}",
+            "commit": "${{ github.sha }}",
+            "trigger": "${{ github.event_name }}",
+            "environment": "${{ github.event.inputs.environment || 'auto' }}"
+          }
+          EOF
+          )
+          
+          echo "Sending webhook payload: $payload"
+          
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            --max-time 30 \
+            --data "$payload" \
+            "${{ secrets.n8n_url }}" || {
+              echo "Webhook call failed, but continuing..."
+              exit 0
+            }
