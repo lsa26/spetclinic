@@ -64,7 +64,14 @@ jobs:
           
       - name: Send failure notification
         if: failure()
+        env:
+          ENVIRONMENT: ${{ github.event.inputs.environment }}
         run: |
+          # Set default env var if empty
+          if [ -z "$ENVIRONMENT" ]; then
+            ENVIRONMENT="dev"
+          fi
+      
           payload=$(cat <<EOF
           {
             "platform": "github",
@@ -78,11 +85,13 @@ jobs:
             "branch": "${{ github.ref_name }}",
             "commit": "${{ github.sha }}",
             "trigger": "${{ github.event_name }}",
-            "environment": "${{ github.event.inputs.environment || 'dev' }}"
+            "environment": "$ENVIRONMENT"
           }
           EOF
           )
-          
+          echo "Payload to send:"
+          echo "$payload"
+      
           curl -X POST \
             -H "Content-Type: application/json" \
             -H "Accept: application/json" \
