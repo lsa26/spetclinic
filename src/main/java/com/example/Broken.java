@@ -1,7 +1,8 @@
 package com.example;
 
 public class Broken {
-    public void method() 
+    public void method() {
         System.out.println("I Love Dev <3");
-   
+    
+    }
 }
